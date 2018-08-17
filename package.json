@@ -14,6 +14,7 @@
     "jest": "^23.5.0"
   },
   "scripts": {
+    "lint": "eslint .",
     "test": "jest"
   },
   "repository": {
