@@ -79,14 +79,15 @@ describe('Bitmap', () => {
 
   it('can write a new bmp file asynchronously', done => {
     var bmp = Bitmap.fromFileSync(filePalette);
-    bmp.writeToFileAsync(fileOutput, (err, result) => {
+    bmp.writeToFileAsync(fileOutput, (err) => {
       if (err) throw err;
 
-      console.log('async result', result);
-      expect(fs.existsSync(fileOutput)).toBe(true);
-
-      // test done; tell Jest
-      done();
+      // THIS IS FAKE NEWS, NOT A REAL CALLBACK PATTERN!
+      // https://nodejs.org/api/fs.html#fs_fs_exists_path_callback
+      fs.exists(fileOutput, (testFileExists) => {
+        expect(testFileExists).toBe(true);
+        done();
+      });
     });
   });
 });
