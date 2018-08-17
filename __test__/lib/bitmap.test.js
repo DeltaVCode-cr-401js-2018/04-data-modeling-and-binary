@@ -42,6 +42,10 @@ describe('Bitmap', () => {
     expect(bmp.palette.length).toBe(1024);
   });
 
+  afterEach(() => {
+    fs.unlink(fileOutput, err => {});
+  });
+
   it('can read 24-bit palette header fields', () => {
     var bmp = Bitmap.fromFile(fileNonPalette24Bit);
     
@@ -64,5 +68,16 @@ describe('Bitmap', () => {
     bmp.writeToFile(fileOutput);
 
     expect(fs.existsSync(fileOutput)).toBe(true);
+  });
+  it('can write a new bitmap file asyncronously', done => {
+    var bmp = Bitmap.fromFile(filePalette);
+    bmp.writeToFileAsync(fileOutput, (err, result) =>{
+      if (err) throw err;
+
+      console.log('async result', result);
+      expect(fs.existsSync(fileOutput)).toBe(true);
+
+      done();
+    });
   });
 });
