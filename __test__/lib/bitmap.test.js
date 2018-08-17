@@ -71,13 +71,15 @@ describe('Bitmap', () => {
   });
   it('can write a new bitmap file asyncronously', done => {
     var bmp = Bitmap.fromFile(filePalette);
-    bmp.writeToFileAsync(fileOutput, (err, result) =>{
+    bmp.writeToFileAsync(fileOutput, (err) =>{
       if (err) throw err;
 
-      console.log('async result', result);
-      expect(fs.existsSync(fileOutput)).toBe(true);
+      fs.exists(fileOutput, (testFileExists) => {
+        if(err) throw err;
+        expect(testFileExists).toBe(true);
 
-      done();
+        done();
+      });
     });
   });
 });
