@@ -72,6 +72,15 @@ describe('Bitmap', () => {
     expect(bmp.palette.length).toBe(0);
   });
 
+  it('can read a bitmap asynchronously', done => {
+    Bitmap.fromFileAsync(filePalette, (err, bmp) => {
+      if (err) throw err;
+
+      expect(bmp.type).toBe('BM');
+      done();
+    });
+  });
+
   it('can write a new bmp file synchronously', () => {
     var bmp = Bitmap.fromFileSync(filePalette);
     bmp.writeToFileSync(fileOutput);
