@@ -46,11 +46,13 @@ describe('Bitmap', () => {
     expect(bmp.palette.length).toBe(1024);
   });
 
-  afterEach(() => {
+  afterEach(done => {
     // unlink = delete file
     // callback ignores errors, since we don't care
     // if the file doesn't exist
-    fs.unlink(fileOutput, err => {});
+    fs.unlink(fileOutput, () => {
+      done();
+    });
   });
 
   it('can read 24-bit non-palette header fields', () => {
@@ -82,12 +84,17 @@ describe('Bitmap', () => {
     bmp.writeToFileAsync(fileOutput, (err) => {
       if (err) throw err;
 
-      // THIS IS FAKE NEWS, NOT A REAL CALLBACK PATTERN!
-      // https://nodejs.org/api/fs.html#fs_fs_exists_path_callback
-      fs.exists(fileOutput, (testFileExists) => {
-        expect(testFileExists).toBe(true);
-        done();
-      });
+      var written = Bitmap.fromFileSync(fileOutput);
+      expect.anything(written);
+      done();
+
+      // // THIS IS FAKE NEWS, NOT A REAL CALLBACK PATTERN!
+      // // https://nodejs.org/api/fs.html#fs_fs_exists_path_callback
+      // // Docs suggest trying to just read/write the file instead
+      // fs.exists(fileOutput, (testFileExists) => {
+      //   expect(testFileExists).toBe(true);
+      //   done();
+      // });
     });
   });
 });
