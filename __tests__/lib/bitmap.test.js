@@ -46,6 +46,13 @@ describe('Bitmap', () => {
     expect(bmp.palette.length).toBe(1024);
   });
 
+  afterEach(() => {
+    // unlink = delete file
+    // callback ignores errors, since we don't care
+    // if the file doesn't exist
+    fs.unlink(fileOutput, err => {});
+  });
+
   it('can read 24-bit non-palette header fields', () => {
     var bmp = Bitmap.fromFileSync(fileNonPalette24bit);
 
@@ -63,10 +70,23 @@ describe('Bitmap', () => {
     expect(bmp.palette.length).toBe(0);
   });
 
-  it('can write a new bmp file', () => {
+  it('can write a new bmp file synchronously', () => {
     var bmp = Bitmap.fromFileSync(filePalette);
     bmp.writeToFileSync(fileOutput);
 
     expect(fs.existsSync(fileOutput)).toBe(true);
+  });
+
+  it('can write a new bmp file asynchronously', done => {
+    var bmp = Bitmap.fromFileSync(filePalette);
+    bmp.writeToFileAsync(fileOutput, (err, result) => {
+      if (err) throw err;
+
+      console.log('async result', result);
+      expect(fs.existsSync(fileOutput)).toBe(true);
+
+      // test done; tell Jest
+      done();
+    });
   });
 });
