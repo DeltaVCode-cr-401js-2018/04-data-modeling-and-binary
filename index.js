@@ -10,7 +10,7 @@ const [/* ignored */, , inFile, outFile, ...transformNames] = process.argv;
 
 console.log({ inFile, outFile, transformNames });
 
-var bmp = Bitmap.fromFile(inFile);
+var bmp = Bitmap.fromFileSync(inFile);
 console.log(bmp);
 
 // Manual transform
@@ -33,4 +33,4 @@ transformNames.forEach(transformName => {
   }
 });
 
-bmp.writeToFile(outFile);
+bmp.writeToFileSync(outFile);

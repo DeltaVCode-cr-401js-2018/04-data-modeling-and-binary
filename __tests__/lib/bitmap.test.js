@@ -12,7 +12,7 @@ const fileOutput = `${__dirname}/../../output/test-can-write.bmp`;
 
 describe('Bitmap', () => {
   it('can read basic palette header fields', () => {
-    var bmp = Bitmap.fromFile(filePalette);
+    var bmp = Bitmap.fromFileSync(filePalette);
 
     expect(bmp.type).toBe('BM');
     expect(bmp.size).toBeGreaterThan(0);
@@ -30,7 +30,7 @@ describe('Bitmap', () => {
 
   it('can read 8-bit palette (without palette count in header) header fields', () => {
     // house.bmp is weird; it has palette count of 0, but still has a palette!
-    var bmp = Bitmap.fromFile(fileNonPalette8bit);
+    var bmp = Bitmap.fromFileSync(fileNonPalette8bit);
 
     expect(bmp.type).toBe('BM');
     expect(bmp.size).toBeGreaterThan(0);
@@ -47,7 +47,7 @@ describe('Bitmap', () => {
   });
 
   it('can read 24-bit non-palette header fields', () => {
-    var bmp = Bitmap.fromFile(fileNonPalette24bit);
+    var bmp = Bitmap.fromFileSync(fileNonPalette24bit);
 
     expect(bmp.type).toBe('BM');
     expect(bmp.size).toBeGreaterThan(0);
@@ -64,8 +64,8 @@ describe('Bitmap', () => {
   });
 
   it('can write a new bmp file', () => {
-    var bmp = Bitmap.fromFile(filePalette);
-    bmp.writeToFile(fileOutput);
+    var bmp = Bitmap.fromFileSync(filePalette);
+    bmp.writeToFileSync(fileOutput);
 
     expect(fs.existsSync(fileOutput)).toBe(true);
   });
