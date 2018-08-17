@@ -42,8 +42,10 @@ describe('Bitmap', () => {
     expect(bmp.palette.length).toBe(1024);
   });
 
-  afterEach(() => {
-    fs.unlink(fileOutput, err => {});
+  afterEach(done => {
+    fs.unlink(fileOutput, () => {
+      done();
+    });
   });
 
   it('can read 24-bit palette header fields', () => {
@@ -74,12 +76,17 @@ describe('Bitmap', () => {
     bmp.writeToFileAsync(fileOutput, (err) =>{
       if (err) throw err;
 
-      fs.exists(fileOutput, (testFileExists) => {
-        if(err) throw err;
-        expect(testFileExists).toBe(true);
+      var writtenBmp = Bitmap.fromFile(fileOutput);
+      expect.anything(writtenBmp);
+      done();
 
-        done();
-      });
+      //Don't Use this. It is broken
+      // fs.exists(fileOutput, (testFileExists) => {
+      //   if(err) throw err;
+      //   expect(testFileExists).toBe(true);
+
+      //   done();
+      // });
     });
   });
 });
