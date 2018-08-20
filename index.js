@@ -9,7 +9,7 @@ const [/*ignored*/, /*ignored*/, inFile, outFile, ...transforms] = process.argv;
 
 console.log({inFile, outFile, transforms});
 
-var bmp = Bitmap.fromFile(inFile);
+var bmp = Bitmap.fromFileSync(inFile);
 
 transforms.forEach(transformName =>{
   var transform = transformLibrary[transformName];
@@ -23,4 +23,4 @@ transforms.forEach(transformName =>{
 // const invert = require('./lib/transforms/invert-palette');
 // invert(bmp);
 
-bmp.writeToFile(outFile);
+bmp.writeToFileSync(outFile);
