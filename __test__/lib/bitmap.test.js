@@ -9,7 +9,7 @@ const fileOutput = `${__dirname}/../../output/test-can-write.bmp`;
 
 describe('Bitmap', () => {
   it('can read basic palette header fields', () => {
-    var bmp = Bitmap.fromFile(filePalette);
+    var bmp = Bitmap.fromFileSync(filePalette);
 
     expect(bmp.type).toBe('BM');
     expect(bmp.size).toBeGreaterThan(0);
@@ -26,7 +26,7 @@ describe('Bitmap', () => {
   });
 
   it('can read 8-bit palette (without palette count in header) header fields', () => {
-    var bmp = Bitmap.fromFile(fileNonPalette8Bit);
+    var bmp = Bitmap.fromFileSync(fileNonPalette8Bit);
 
     expect(bmp.type).toBe('BM');
     expect(bmp.size).toBeGreaterThan(0);
@@ -49,7 +49,7 @@ describe('Bitmap', () => {
   });
 
   it('can read 24-bit palette header fields', () => {
-    var bmp = Bitmap.fromFile(fileNonPalette24Bit);
+    var bmp = Bitmap.fromFileSync(fileNonPalette24Bit);
     
     expect(bmp.type).toBe('BM');
     expect(bmp.size).toBeGreaterThan(0);
@@ -65,18 +65,29 @@ describe('Bitmap', () => {
     expect(bmp.palette.length).toBe(0);
   });
 
+  it('can write a file asyncronously', done => {
+    Bitmap.fromFileAsync(filePalette, (err, bmp) => {
+      if(err) throw err;
+
+      expect(bmp.type).toBe('BM');
+
+
+      done();
+    });
+  });
+
   it('can write a new bitmap file', () => {
-    var bmp = Bitmap.fromFile(filePalette);
-    bmp.writeToFile(fileOutput);
+    var bmp = Bitmap.fromFileSync(filePalette);
+    bmp.writeToFileSync(fileOutput);
 
     expect(fs.existsSync(fileOutput)).toBe(true);
   });
   it('can write a new bitmap file asyncronously', done => {
-    var bmp = Bitmap.fromFile(filePalette);
+    var bmp = Bitmap.fromFileSync(filePalette);
     bmp.writeToFileAsync(fileOutput, (err) =>{
       if (err) throw err;
 
-      var writtenBmp = Bitmap.fromFile(fileOutput);
+      var writtenBmp = Bitmap.fromFileSync(fileOutput);
       expect.anything(writtenBmp);
       done();
 
