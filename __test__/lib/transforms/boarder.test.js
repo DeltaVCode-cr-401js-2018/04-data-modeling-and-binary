@@ -1,7 +1,7 @@
 'use strict';
 
 const transform = require('../../../lib/transforms/boarder');
- describe('transforms/boarder', () => {
+describe('transforms/boarder', () => {
   it('adds a border with color 0', () => {
     var bmp = {
       height: 6,
@@ -16,8 +16,8 @@ const transform = require('../../../lib/transforms/boarder');
       ]),
     };
 
-     transform(bmp);
-     expect(bmp.img)
+    transform(bmp);
+    expect(bmp.img)
       .toEqual(new Buffer([
         0,0,0,0,0,0, // row 0
         0,8,9,1,2,0, // row 1
